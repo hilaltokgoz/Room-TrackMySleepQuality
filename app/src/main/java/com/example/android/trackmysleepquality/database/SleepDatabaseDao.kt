@@ -16,7 +16,28 @@
 
 package com.example.android.trackmysleepquality.database
 
+import android.os.FileObserver.DELETE
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
 
 @Dao
-interface SleepDatabaseDao
+interface SleepDatabaseDao{
+    @Insert
+    fun insert(night: SleepNight){}
+    @Update
+    fun update(night: SleepNight){}
+    @Query(value = ("SELECT * from daily_sleep_quality_table WHERE nightId = :key"))//fun daki argumana erişim için : kullanılır.
+    fun get(key:Long):SleepNight? //? null yapılabilir.
+    @Query("DELETE from daily_sleep_quality_table")
+    fun clear() //Tablonun kendisini değil, içindekileri siler.
+    @Query("SELECT * FROM daily_sleep_quality_table ORDER BY nightId DESC LIMIT 1") //id'yi büyükten küçüğe sıralar ve Limit 1 olduğu için tek bir öğe gösterir.
+    fun getTonight(): SleepNight?
+    @Query("SELECT * FROM daily_sleep_quality_table ORDER BY nightId DESC")//id'si azalan sırada sıralanmış tüm  id'leri gösterir.
+    fun getAllNights(): LiveData<List<SleepNight>>//getAllNights(), LiveData olarak SleepNight varlıklarının bir listesini döndürsün. Room, bu LiveData'yı sizin için güncel tutar;
+
+
+
+}

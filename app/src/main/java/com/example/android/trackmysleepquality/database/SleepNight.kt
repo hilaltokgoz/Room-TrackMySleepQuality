@@ -16,9 +16,21 @@
 
 package com.example.android.trackmysleepquality.database
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "daily_sleep_quality_table")
 data class SleepNight(
+    @PrimaryKey(autoGenerate = true)
     var nightId: Long = 0L,
-    val startTimeMilli: Long = System.currentTimeMillis(),
+
+    @ColumnInfo(name="start_time_milli")
+    val startTimeMilli: Long = System.currentTimeMillis(),//ms olarak
+
+    @ColumnInfo(name = "end_time_milli")
     var endTimeMilli: Long = startTimeMilli,
-    var sleepQuality: Int = -1
+
+    @ColumnInfo(name = "quality_rating")
+    var sleepQuality: Int = -1   //Veri toplanmadı
 )
